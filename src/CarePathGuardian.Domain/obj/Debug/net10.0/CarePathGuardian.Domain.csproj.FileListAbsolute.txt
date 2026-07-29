@@ -1,0 +1,12 @@
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/bin/Debug/net10.0/CarePathGuardian.Domain.deps.json
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/bin/Debug/net10.0/CarePathGuardian.Domain.dll
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/bin/Debug/net10.0/CarePathGuardian.Domain.pdb
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/obj/Debug/net10.0/CarePathGuardian.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/obj/Debug/net10.0/CarePathGuardian.Domain.AssemblyInfoInputs.cache
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/obj/Debug/net10.0/CarePathGuardian.Domain.AssemblyInfo.cs
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/obj/Debug/net10.0/CarePathGuardian.Domain.csproj.CoreCompileInputs.cache
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/obj/Debug/net10.0/CarePathGuardian.Domain.sourcelink.json
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/obj/Debug/net10.0/CarePathGuardian.Domain.dll
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/obj/Debug/net10.0/refint/CarePathGuardian.Domain.dll
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/obj/Debug/net10.0/CarePathGuardian.Domain.pdb
+/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/obj/Debug/net10.0/ref/CarePathGuardian.Domain.dll

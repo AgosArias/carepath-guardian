@@ -1,0 +1,6 @@
+@CarePathGuardian.Api_HostAddress = http://localhost:5217
+
+GET {{CarePathGuardian.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

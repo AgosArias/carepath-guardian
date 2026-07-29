@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CarePathGuardian.Api/CarePathGuardian.Api.csproj" />
+    <Project Path="src/CarePathGuardian.Application/CarePathGuardian.Application.csproj" />
+    <Project Path="src/CarePathGuardian.Domain/CarePathGuardian.Domain.csproj" />
+    <Project Path="src/CarePathGuardian.Infrastructure/CarePathGuardian.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/CarePathGuardian.UnitTests/CarePathGuardian.UnitTests.csproj" />
+  </Folder>
+</Solution>
