@@ -18,4 +18,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CarePathGuardian.Domain\CarePathGuardian.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

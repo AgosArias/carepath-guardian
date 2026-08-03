@@ -11,4 +11,9 @@
     <PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarePathGuardian.Application\CarePathGuardian.Application.csproj" />
+    <ProjectReference Include="..\CarePathGuardian.Infrastructure\CarePathGuardian.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net10.0": {}
+    "net10.0": {
+      "CarePathGuardian.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/CarePathGuardian.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CarePathGuardian.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "CarePathGuardian.Domain/1.0.0": {
+      "type": "project",
+      "path": "../CarePathGuardian.Domain/CarePathGuardian.Domain.csproj",
+      "msbuildProject": "../CarePathGuardian.Domain/CarePathGuardian.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net10.0": []
+    "net10.0": [
+      "CarePathGuardian.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "/home/agos/.nuget/packages/": {}
@@ -32,7 +51,11 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/CarePathGuardian.Domain.csproj": {
+              "projectPath": "/home/agos/repo/carepath-guardian/src/CarePathGuardian.Domain/CarePathGuardian.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
