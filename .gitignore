@@ -1,0 +1,28 @@
+# Build directories
+bin/
+obj/
+
+# Visual Studio / Rider files
+.vs/
+*.user
+*.suo
+*.DotSettings.user
+
+# Rider
+.idea/
+*.sln.iml
+
+# NuGet
+*.nupkg
+project.lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
