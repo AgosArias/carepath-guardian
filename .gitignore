@@ -1,6 +1,7 @@
 # Build directories
 bin/
 obj/
+doc/
 
 # Visual Studio / Rider files
 .vs/
@@ -26,3 +27,4 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+.env
