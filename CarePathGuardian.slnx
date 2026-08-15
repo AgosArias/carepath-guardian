@@ -6,6 +6,7 @@
     <Project Path="src/CarePathGuardian.Infrastructure/CarePathGuardian.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/test/">
+    <Project Path="test/CarePathGuardian.IntegrationTests/CarePathGuardian.IntegrationTests.csproj" />
     <Project Path="test/CarePathGuardian.UnitTests/CarePathGuardian.UnitTests.csproj" />
   </Folder>
 </Solution>
