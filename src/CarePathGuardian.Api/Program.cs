@@ -1,5 +1,11 @@
 using CarePathGuardian.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using CarePathGuardian.Infrastructure.Persistence.Repositories;
+using CarePathGuardian.Application.Abstractions.Persistence;
+using CarePathGuardian.Application.Patients.CreatePatient;
+using CarePathGuardian.Application.Patients.GetPatientById;
+using Microsoft.AspNetCore.Mvc;
+using CarePathGuardian.Domain.Patients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +17,10 @@ builder.Services.AddDbContext<CarePathGuardianDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 		
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<CreatePatientHandler>();
+builder.Services.AddScoped<GetPatientByIdHandler>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,28 +31,25 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
+app.MapPost("/patients", async (
+	[FromBody] CreatePatientCommand command,
+	[FromServices] CreatePatientHandler handler) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+	var patient = await handler.Handle(command);
+    return Results.Created($"/patients/{patient.Id}",patient);
+});
+
+app.MapGet("patients/{id:guid}", async (
+	Guid id,
+	[FromServices] GetPatientByIdHandler handler) =>
+{
+	var query = new GetPatientByIdQuery(id);
+	var patient = await handler.Handle(query);
+	return patient is null? Results.NotFound(): Results.Ok(patient);
+});
+
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+

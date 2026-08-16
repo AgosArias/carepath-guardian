@@ -12,7 +12,7 @@ public class CreatePatientHandler
 		_patientRepository = patientRepository;
 	}
 
-	public async Task Handle(CreatePatientCommand command)
+	public async Task<Patient> Handle(CreatePatientCommand command)
 	{
 		var patient = new Patient(
             command.ExternalId,
@@ -23,6 +23,8 @@ public class CreatePatientHandler
             command.Phone);
 
 		await _patientRepository.AddAsync(patient);
+
+		return patient;
 	}
 
 
