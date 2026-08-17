@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\CarePathGuardian.Domain\CarePathGuardian.Domain.csproj" />
+    <ProjectReference Include="..\..\src\CarePathGuardian.Application\CarePathGuardian.Application.csproj" />
   </ItemGroup>
 
 </Project>
