@@ -4,8 +4,11 @@ using CarePathGuardian.Infrastructure.Persistence.Repositories;
 using CarePathGuardian.Application.Abstractions.Persistence;
 using CarePathGuardian.Application.Patients.CreatePatient;
 using CarePathGuardian.Application.Patients.GetPatientById;
+using CarePathGuardian.Application.Referrals.CreateReferral;
+using CarePathGuardian.Application.Referrals.GetReferralById;
 using Microsoft.AspNetCore.Mvc;
 using CarePathGuardian.Domain.Patients;
+using CarePathGuardian.Domain.Referrals;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,10 @@ builder.Services.AddDbContext<CarePathGuardianDbContext>(options =>
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<CreatePatientHandler>();
 builder.Services.AddScoped<GetPatientByIdHandler>();
+
+builder.Services.AddScoped<IReferralRepository, ReferralRepository>();
+builder.Services.AddScoped<CreateReferralHandle>();
+builder.Services.AddScoped<GetReferralByIdHandler>();
 
 var app = builder.Build();
 
@@ -49,6 +56,22 @@ app.MapGet("patients/{id:guid}", async (
 	return patient is null? Results.NotFound(): Results.Ok(patient);
 });
 
+app.MapPost("/referrals", async(
+	[FromBody] CreateReferralCommand command,
+	[FromServices] CreateReferralHandle handler) =>
+{
+	var referral = await handler.Handle(command);
+	return Results.Created($"/referrals/{referral.Id}", referral);
+});
+
+app.MapGet("/referrals/{id:guid}", async(
+	Guid id, 
+	[FromServices] GetReferralByIdHandler handler) =>
+{
+	var query = new GetReferralByIdQuery(id);
+	var referral = await handler.Handle(query);
+	return referral is null? Results.NotFound(): Results.Ok(referral);
+});
 
 app.Run();
 
