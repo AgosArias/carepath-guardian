@@ -9,6 +9,8 @@ using CarePathGuardian.Application.Referrals.GetReferralById;
 using Microsoft.AspNetCore.Mvc;
 using CarePathGuardian.Domain.Patients;
 using CarePathGuardian.Domain.Referrals;
+using CarePathGuardian.Application.Appointments.CreateAppointment;
+using CarePathGuardian.Application.Appointments.GetAppointmentById;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,10 @@ builder.Services.AddScoped<GetPatientByIdHandler>();
 builder.Services.AddScoped<IReferralRepository, ReferralRepository>();
 builder.Services.AddScoped<CreateReferralHandle>();
 builder.Services.AddScoped<GetReferralByIdHandler>();
+
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<CreateAppointmentHandler>();
+builder.Services.AddScoped<GetAppointmentByIdHandler>();
 
 var app = builder.Build();
 
@@ -71,6 +77,23 @@ app.MapGet("/referrals/{id:guid}", async(
 	var query = new GetReferralByIdQuery(id);
 	var referral = await handler.Handle(query);
 	return referral is null? Results.NotFound(): Results.Ok(referral);
+});
+
+app.MapPost("/appointments", async(
+	[FromBody] CreateAppointmentCommand command,
+	[FromServices] CreateAppointmentHandler handler) =>
+{
+	var appointment = await handler.Handle(command);
+	return Results.Created($"/appointments/{appointment.Id}", appointment);
+});
+
+app.MapGet("/appointments/{id:guid}", async(
+	Guid id, 
+	[FromServices] GetAppointmentByIdHandler handler) =>
+{
+	var query = new GetAppointmentByIdQuery(id);
+	var appointments = await handler.Handle(query);
+	return appointments is null? Results.NotFound(): Results.Ok(appointments);
 });
 
 app.Run();
