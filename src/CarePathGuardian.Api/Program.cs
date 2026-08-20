@@ -11,10 +11,10 @@ using CarePathGuardian.Domain.Patients;
 using CarePathGuardian.Domain.Referrals;
 using CarePathGuardian.Application.Appointments.CreateAppointment;
 using CarePathGuardian.Application.Appointments.GetAppointmentById;
-using System.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
 using CarePathGuardian.Application.DataQualityIssues.GetDataQualityIssueById;
 using CarePathGuardian.Application.DataQualityIssues.CreateDataQualityIssue;
+using CarePathGuardian.Application.DataQualityIssues.EvaluateReferralDataQuality;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,12 +42,15 @@ builder.Services.AddScoped<IDataQualityIssueRepository, DataQualityIssueReposito
 builder.Services.AddScoped<CreateDataQualityIssueHandler>();
 builder.Services.AddScoped<GetDataQualityIssueByIdHandler>();
 
+builder.Services.AddScoped<EvaluateReferralDataQualityHandler>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+	app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
@@ -61,7 +64,7 @@ app.MapPost("/patients", async (
     return Results.Created($"/patients/{patient.Id}",patient);
 });
 
-app.MapGet("patients/{id:guid}", async (
+app.MapGet("/patients/{id:guid}", async (
 	Guid id,
 	[FromServices] GetPatientByIdHandler handler) =>
 {
