@@ -5,18 +5,21 @@ using CarePathGuardian.Domain.DataQualityIssues;
 
 namespace CarePathGuardian.Domain.DataQualityRules;
 
-public class AppointmentBeforeReferralRule
+public class AppointmentBeforeReferralRule : IReferralDataQualityRule
 {
-	public DataQualityIssue? Evaluate(Appointment appointment, Referral referral)
+	public DataQualityIssue? Evaluate(Referral referral, IEnumerable<Appointment> appointments)
 	{
-		if(DateOnly.FromDateTime(appointment.ScheduledAtUtc) < referral.ReferralDate)
+		foreach( var appointment in appointments)
 		{
-			return new DataQualityIssue(
-			"Appointment",
-			appointment.Id,
-			"APPOINTMENT_BEFORE_REFERRAL",
-			"Appointment date is before referral date.",
-			IssueSeverity.High);
+			if(DateOnly.FromDateTime(appointment.ScheduledAtUtc) < referral.ReferralDate)
+			{
+				return new DataQualityIssue(
+				"Appointment",
+				appointment.Id,
+				"APPOINTMENT_BEFORE_REFERRAL",
+				"Appointment date is before referral date.",
+				IssueSeverity.High);
+			}
 		}
 		return null;
 	}

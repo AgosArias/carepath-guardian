@@ -4,7 +4,7 @@ using CarePathGuardian.Domain.Referrals;
 
 namespace CarePathGuardian.Domain.DataQualityRules;
 
-public class ReferralPendingOver14DaysRule
+public class ReferralPendingOver14DaysRule : IReferralDataQualityRule
 {
 	public DataQualityIssue? Evaluate(Referral referral, IEnumerable<Appointment> appointments)
 	{

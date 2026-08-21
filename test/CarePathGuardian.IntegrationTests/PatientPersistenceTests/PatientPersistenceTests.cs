@@ -17,7 +17,7 @@ namespace CarePathGuardian.IntegrationTests.PatientPersistenceTests
 			.Options;
 
 			await using var context = new CarePathGuardianDbContext(options);
-			        var patient = new Patient(
+			var patient = new Patient(
             $"PAT-{Guid.NewGuid()}",
             "Ana",
             "Garcia",

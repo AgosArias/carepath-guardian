@@ -1,24 +1,26 @@
 using CarePathGuardian.Domain.Appointments;
 using CarePathGuardian.Domain.DataQualityIssues;
-using System.Collections.Generic;
-	
+using CarePathGuardian.Domain.Referrals;	
 
 namespace CarePathGuardian.Domain.DataQualityRules;
-public class CancelledAppointmentNotRescheduledRule
+public class CancelledAppointmentNotRescheduledRule : IReferralDataQualityRule
 {
-	public DataQualityIssue? Evaluate (Appointment appointment,	IEnumerable<Appointment> appointments)
+	public DataQualityIssue? Evaluate (Referral referral,	IEnumerable<Appointment> appointments)
 	{
-		bool hasAppointments = appointments.Any(a => a.Status == AppointmentStatus.Scheduled &&
-		a.ReferralId == appointment.ReferralId);
-		if(appointment.Status == AppointmentStatus.Cancelled && !hasAppointments)
+		bool hasScheduledAppointment = appointments.Any(a => a.Status == AppointmentStatus.Scheduled &&
+		a.ReferralId == referral.Id);
+		foreach( var  appointment in appointments)
 		{
-			return new DataQualityIssue(
-			"Appointment",
-			appointment.Id,
-			"CANCELLED_APPOINTMENT_NOT_RESCHEDULED",
-			"Cancelled appointment has not been rescheduled.",
-			IssueSeverity.High);
-		}	
+			if(appointment.Status == AppointmentStatus.Cancelled && !hasScheduledAppointment)
+			{
+				return new DataQualityIssue(
+				"Appointment",
+				appointment.Id,
+				"CANCELLED_APPOINTMENT_NOT_RESCHEDULED",
+				"Cancelled appointment has not been rescheduled.",
+				IssueSeverity.High);
+			}	
+		}
 		return null;
 	}
 }

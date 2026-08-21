@@ -17,9 +17,10 @@ public class AppointmentBeforeReferralRuleTests
 			ReferralStatus.Pending, ReferralPriority.Low);
 		Appointment appointment = new Appointment(referral.Id, scheduledAtUtc, 
 		AppointmentStatus.Scheduled, null);
+		List<Appointment> appointments = new List<Appointment>{appointment};
 
 		var rule = new AppointmentBeforeReferralRule();
-		var result = rule.Evaluate(appointment, referral);
+		var result = rule.Evaluate(referral, appointments);
 		Assert.NotNull(result);
 		Assert.Equal("APPOINTMENT_BEFORE_REFERRAL", result.RuleCode);
 		Assert.Equal(appointment.Id, result.EntityId);
@@ -37,9 +38,11 @@ public class AppointmentBeforeReferralRuleTests
 			ReferralStatus.Pending, ReferralPriority.Low);
 		Appointment appointment = new Appointment(referral.Id, scheduledAtUtc, 
 		AppointmentStatus.Scheduled, null);
+		List<Appointment> appointments = new List<Appointment>{appointment};
+
 
 		var rule = new AppointmentBeforeReferralRule();
-		var result = rule.Evaluate(appointment, referral);
+		var result = rule.Evaluate(referral, appointments);
 		
 		Assert.Null(result);
 	}
@@ -54,9 +57,10 @@ public class AppointmentBeforeReferralRuleTests
 			ReferralStatus.Pending, ReferralPriority.Low);
 		Appointment appointment = new Appointment(referral.Id, scheduledAtUtc, 
 		AppointmentStatus.Scheduled, null);
+		List<Appointment> appointments = new List<Appointment>{appointment};
 
 		var rule = new AppointmentBeforeReferralRule();
-		var result = rule.Evaluate(appointment, referral);
+		var result = rule.Evaluate(referral, appointments);
 		Assert.Null(result);
 	}
 }
