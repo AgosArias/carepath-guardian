@@ -13,6 +13,6 @@ public class GetAllDataQualityIssuesHandler
 
 	public async Task<List<DataQualityIssue>> Handle(GetAllDataQualityIssuesQuery query)
 	{
-		return await _dataQualityIssueRepository.GetAllAsync();
+		return await _dataQualityIssueRepository.GetAllAsync(query.Status, query.Severity);
 	}
 }

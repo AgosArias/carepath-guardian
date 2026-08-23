@@ -17,8 +17,14 @@ public class FakeDataQualityIssueRepositor : IDataQualityIssueRepository
 		
 	}
 
-	public Task<List<DataQualityIssue>> GetAllAsync()
+	public Task<List<DataQualityIssue>> GetAllAsync(IssueStatus? status = null,
+    IssueSeverity? severity = null)
 	{
-		return Task.FromResult(Issues);
+		IEnumerable<DataQualityIssue> issues = Issues;
+		if(status.HasValue)
+			issues = issues.Where(i => i.Status == status.Value);
+		if(severity.HasValue)
+			issues = issues.Where(i => i.Severity == severity.Value);
+		return Task.FromResult(issues.ToList());
 	} 
 }

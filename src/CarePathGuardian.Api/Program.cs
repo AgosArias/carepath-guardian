@@ -14,6 +14,7 @@ using CarePathGuardian.Application.DataQualityIssues.EvaluateReferralDataQuality
 using CarePathGuardian.Application.DataQualityIssues.GetAllDataQualityIssues;
 using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
+using CarePathGuardian.Domain.DataQualityIssues;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -116,9 +117,11 @@ app.MapPost("/data-quality-issues", async(
 });
 
 app.MapGet("/data-quality-issues", async(
+	IssueStatus? status,
+	IssueSeverity? severity,
 	[FromServices] GetAllDataQualityIssuesHandler handler) =>
 {
-	var query = new GetAllDataQualityIssuesQuery();
+	var query = new GetAllDataQualityIssuesQuery(status, severity);
 	var issue = await handler.Handle(query);
 	return Results.Ok(issue);
 });

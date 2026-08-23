@@ -21,8 +21,15 @@ public class DataQualityIssueRepository : IDataQualityIssueRepository
 		return await _dbContext.DataQualityIssues.FindAsync(id);
 	}
 
-	public async Task<List<DataQualityIssue>> GetAllAsync()
+	public async Task<List<DataQualityIssue>> GetAllAsync(IssueStatus? status = null, IssueSeverity? severity = null)
 	{
-		return await _dbContext.DataQualityIssues.AsNoTracking().ToListAsync();
+		var query = _dbContext.DataQualityIssues.AsNoTracking();
+
+		if(status.HasValue)
+			query = query.Where(i => i.Status == status.Value);
+		if(severity.HasValue)
+			query = query.Where(i => i.Severity == severity.Value);
+
+		return await query.ToListAsync();
 	}
 }
