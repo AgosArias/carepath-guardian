@@ -120,7 +120,7 @@ app.MapGet("/data-quality-issues", async(
 {
 	var query = new GetAllDataQualityIssuesQuery();
 	var issue = await handler.Handle(query);
-	return issue is null? Results.NotFound(): Results.Ok(issue);
+	return Results.Ok(issue);
 });
 
 app.MapGet("/data-quality-issues/{id:guid}", async(
