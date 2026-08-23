@@ -1,5 +1,6 @@
 using CarePathGuardian.Application.Abstractions.Persistence;
 using CarePathGuardian.Domain.DataQualityIssues;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarePathGuardian.Infrastructure.Persistence.Repositories;
 public class DataQualityIssueRepository : IDataQualityIssueRepository
@@ -18,5 +19,10 @@ public class DataQualityIssueRepository : IDataQualityIssueRepository
 	public async Task<DataQualityIssue?> GetByIdAsync(Guid id)
 	{
 		return await _dbContext.DataQualityIssues.FindAsync(id);
+	}
+
+	public async Task<List<DataQualityIssue>> GetAllAsync()
+	{
+		return await _dbContext.DataQualityIssues.AsNoTracking().ToListAsync();
 	}
 }

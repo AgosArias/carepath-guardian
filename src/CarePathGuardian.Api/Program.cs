@@ -6,14 +6,13 @@ using CarePathGuardian.Application.Patients.CreatePatient;
 using CarePathGuardian.Application.Patients.GetPatientById;
 using CarePathGuardian.Application.Referrals.CreateReferral;
 using CarePathGuardian.Application.Referrals.GetReferralById;
-using Microsoft.AspNetCore.Mvc;
-using CarePathGuardian.Domain.Patients;
-using CarePathGuardian.Domain.Referrals;
 using CarePathGuardian.Application.Appointments.CreateAppointment;
 using CarePathGuardian.Application.Appointments.GetAppointmentById;
 using CarePathGuardian.Application.DataQualityIssues.GetDataQualityIssueById;
 using CarePathGuardian.Application.DataQualityIssues.CreateDataQualityIssue;
 using CarePathGuardian.Application.DataQualityIssues.EvaluateReferralDataQuality;
+using CarePathGuardian.Application.DataQualityIssues.GetAllDataQualityIssues;
+using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +40,7 @@ builder.Services.AddScoped<GetAppointmentByIdHandler>();
 builder.Services.AddScoped<IDataQualityIssueRepository, DataQualityIssueRepository>();
 builder.Services.AddScoped<CreateDataQualityIssueHandler>();
 builder.Services.AddScoped<GetDataQualityIssueByIdHandler>();
+builder.Services.AddScoped<GetAllDataQualityIssuesHandler>();
 
 builder.Services.AddScoped<EvaluateReferralDataQualityHandler>();
 
@@ -113,6 +113,14 @@ app.MapPost("/data-quality-issues", async(
 {
 	var issue = await handler.Handle(command);
 	return Results.Created($"/data-quality-issues/{issue.Id}", issue);
+});
+
+app.MapGet("/data-quality-issues", async(
+	[FromServices] GetAllDataQualityIssuesHandler handler) =>
+{
+	var query = new GetAllDataQualityIssuesQuery();
+	var issue = await handler.Handle(query);
+	return issue is null? Results.NotFound(): Results.Ok(issue);
 });
 
 app.MapGet("/data-quality-issues/{id:guid}", async(

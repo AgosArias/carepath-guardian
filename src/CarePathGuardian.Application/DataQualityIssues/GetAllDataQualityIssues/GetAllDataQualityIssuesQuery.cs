@@ -1,0 +1,2 @@
+namespace CarePathGuardian.Application.DataQualityIssues.GetAllDataQualityIssues;
+public sealed record GetAllDataQualityIssuesQuery;

@@ -17,5 +17,8 @@ public class FakeDataQualityIssueRepositor : IDataQualityIssueRepository
 		
 	}
 
-	public void Dispose(){}
+	public Task<List<DataQualityIssue>> GetAllAsync()
+	{
+		return Task.FromResult(Issues);
+	} 
 }

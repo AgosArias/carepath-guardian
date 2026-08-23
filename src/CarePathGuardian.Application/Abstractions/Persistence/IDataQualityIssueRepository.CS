@@ -6,4 +6,6 @@ public interface IDataQualityIssueRepository
 {
 	Task AddAsync(DataQualityIssue issue);
 	Task<DataQualityIssue?> GetByIdAsync(Guid id);
+
+	Task<List<DataQualityIssue>> GetAllAsync();
 }
