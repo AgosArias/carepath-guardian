@@ -40,4 +40,16 @@ public class DataQualityIssue
 		ResolvedAtUtc = null;
 		ResolutionNotes = null;
 	}
+
+	public void Resolve(string resolutionNotes)
+	{
+		if(Status != IssueStatus.Open)
+			throw new  InvalidOperationException("Only open issues can be resolved.");
+		if(string.IsNullOrWhiteSpace(resolutionNotes))
+			throw new ArgumentException( "Resolution notes are required.",
+            nameof(resolutionNotes));
+		Status = IssueStatus.Resolved;
+		ResolvedAtUtc = DateTime.UtcNow;
+		ResolutionNotes = resolutionNotes.Trim();
+	}
 }

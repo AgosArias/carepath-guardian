@@ -59,6 +59,42 @@ namespace CarePathGuardian.UnitTests.DataQualityIssues
 			var exception = Assert.Throws<ArgumentException>(action);
 			Assert.Equal("description", exception.ParamName);
 		}
+
+		[Fact]
+		public void Resolve_WhenIssueIsOpen_ShouldResolveIssue()
+		{
+			Guid entityId = Guid.NewGuid();
+			DataQualityIssue dataQualityIssue = new DataQualityIssue(
+				"Type 10", entityId, "ruleCode",
+				"description", IssueSeverity.High);
+			dataQualityIssue.Resolve("resolve");
+			Assert.Equal(IssueStatus.Resolved, dataQualityIssue.Status);
+			Assert.NotNull(dataQualityIssue.ResolvedAtUtc);
+			Assert.Equal("resolve", dataQualityIssue.ResolutionNotes);
+		}
+
+		[Fact]
+		public void Resolve_WhenIssueIsNotOpen_ShouldThrow()
+		{
+			Guid entityId = Guid.NewGuid();
+			DataQualityIssue dataQualityIssue = new DataQualityIssue(
+				"Type 10", entityId, "ruleCode",
+				"description", IssueSeverity.High);
+			dataQualityIssue.Resolve("resolve");
+			Action action = () => dataQualityIssue.Resolve("resolve");
+			Assert.Throws<InvalidOperationException>(action);
+		}
+
+		[Fact]
+		public void Resolve_WhenNotesAreEmpty_ShouldThrow()
+		{
+			Guid entityId = Guid.NewGuid();
+			DataQualityIssue dataQualityIssue = new DataQualityIssue(
+				"Type 10", entityId, "ruleCode",
+				"description", IssueSeverity.High);
+			Action action = () => dataQualityIssue.Resolve("  ");
+			Assert.Throws<ArgumentException>(action);
+		}
     }
 
 }
