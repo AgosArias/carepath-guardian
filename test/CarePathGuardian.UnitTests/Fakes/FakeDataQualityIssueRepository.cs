@@ -27,4 +27,9 @@ public class FakeDataQualityIssueRepositor : IDataQualityIssueRepository
 			issues = issues.Where(i => i.Severity == severity.Value);
 		return Task.FromResult(issues.ToList());
 	} 
+
+	public Task UpdateAsync(DataQualityIssue issue)
+	{
+		return Task.CompletedTask;
+	}
 }

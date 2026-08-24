@@ -15,6 +15,7 @@ using CarePathGuardian.Application.DataQualityIssues.GetAllDataQualityIssues;
 using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
 using CarePathGuardian.Domain.DataQualityIssues;
+using CarePathGuardian.Application.DataQualityIssues.ResolveDataQualityIssue;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,7 @@ builder.Services.AddScoped<IDataQualityIssueRepository, DataQualityIssueReposito
 builder.Services.AddScoped<CreateDataQualityIssueHandler>();
 builder.Services.AddScoped<GetDataQualityIssueByIdHandler>();
 builder.Services.AddScoped<GetAllDataQualityIssuesHandler>();
+builder.Services.AddScoped<ResolveDataQualityIssueHandler>();
 
 builder.Services.AddScoped<EvaluateReferralDataQualityHandler>();
 
@@ -133,6 +135,16 @@ app.MapGet("/data-quality-issues/{id:guid}", async(
 	var query = new GetDataQualityIssueByIdQuery(id);
 	var issue = await handler.Handle(query);
 	return issue is null? Results.NotFound(): Results.Ok(issue);
+});
+
+app.MapPatch("/data-quality-issues/{id:guid}/resolve", async(
+	Guid id,
+	[FromBody] ResolveDataQualityIssueCommand command,
+	[FromServices] ResolveDataQualityIssueHandler handler) =>
+	{
+		var issue = await handler.Handle(command with {Id = id});
+
+		return issue is null? Results.NotFound(): Results.Ok(issue);
 });
 
 app.Run();

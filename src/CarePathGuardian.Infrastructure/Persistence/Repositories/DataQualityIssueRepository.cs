@@ -32,4 +32,9 @@ public class DataQualityIssueRepository : IDataQualityIssueRepository
 
 		return await query.ToListAsync();
 	}
+
+	public async Task UpdateAsync(DataQualityIssue issue)
+	{
+		await _dbContext.SaveChangesAsync();
+	}
 }
