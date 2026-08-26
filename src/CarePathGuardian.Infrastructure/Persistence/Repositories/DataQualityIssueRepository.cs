@@ -21,7 +21,10 @@ public class DataQualityIssueRepository : IDataQualityIssueRepository
 		return await _dbContext.DataQualityIssues.FindAsync(id);
 	}
 
-	public async Task<List<DataQualityIssue>> GetAllAsync(IssueStatus? status = null, IssueSeverity? severity = null)
+	public async Task<List<DataQualityIssue>> GetAllAsync(IssueStatus? status = null, 
+	IssueSeverity? severity = null, 
+	int page = 1,
+    int pageSize = 20)
 	{
 		var query = _dbContext.DataQualityIssues.AsNoTracking();
 
@@ -30,7 +33,11 @@ public class DataQualityIssueRepository : IDataQualityIssueRepository
 		if(severity.HasValue)
 			query = query.Where(i => i.Severity == severity.Value);
 
-		return await query.ToListAsync();
+		return await query
+		.OrderByDescending(i=> i.DetectedAtUtc)
+		.Skip((page - 1) * pageSize)
+		.Take(pageSize)
+		.ToListAsync();
 	}
 
 	public async Task UpdateAsync(DataQualityIssue issue)

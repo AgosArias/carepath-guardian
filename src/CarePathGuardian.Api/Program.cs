@@ -119,11 +119,14 @@ app.MapPost("/data-quality-issues", async(
 });
 
 app.MapGet("/data-quality-issues", async(
+	[FromServices] GetAllDataQualityIssuesHandler handler,
 	IssueStatus? status,
 	IssueSeverity? severity,
-	[FromServices] GetAllDataQualityIssuesHandler handler) =>
+	int page = 1,
+    int pageSize = 20
+	) =>
 {
-	var query = new GetAllDataQualityIssuesQuery(status, severity);
+	var query = new GetAllDataQualityIssuesQuery(status, severity, page, pageSize);
 	var issue = await handler.Handle(query);
 	return Results.Ok(issue);
 });
