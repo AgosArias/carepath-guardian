@@ -5,6 +5,7 @@ using CarePathGuardian.Domain.Referrals;
 namespace CarePathGuardian.Domain.DataQualityRules;
 public class CancelledAppointmentNotRescheduledRule : IReferralDataQualityRule
 {
+	public string RuleCode => "CANCELLED_APPOINTMENT_NOT_RESCHEDULED";
 	public DataQualityIssue? Evaluate (Referral referral,	IEnumerable<Appointment> appointments)
 	{
 		bool hasScheduledAppointment = appointments.Any(a => a.Status == AppointmentStatus.Scheduled &&
@@ -16,7 +17,7 @@ public class CancelledAppointmentNotRescheduledRule : IReferralDataQualityRule
 				return new DataQualityIssue(
 				"Appointment",
 				appointment.Id,
-				"CANCELLED_APPOINTMENT_NOT_RESCHEDULED",
+				RuleCode,
 				"Cancelled appointment has not been rescheduled.",
 				IssueSeverity.High);
 			}	

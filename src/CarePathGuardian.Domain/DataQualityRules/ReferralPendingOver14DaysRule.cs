@@ -6,6 +6,7 @@ namespace CarePathGuardian.Domain.DataQualityRules;
 
 public class ReferralPendingOver14DaysRule : IReferralDataQualityRule
 {
+	public string RuleCode => "REFERRAL_PENDING_OVER_14_DAYS";
 	public DataQualityIssue? Evaluate(Referral referral, IEnumerable<Appointment> appointments)
 	{
 
@@ -22,7 +23,7 @@ public class ReferralPendingOver14DaysRule : IReferralDataQualityRule
 			return new DataQualityIssue(
 		"Referral",
 		referral.Id,
-		"REFERRAL_PENDING_OVER_14_DAYS",
+		RuleCode,
 		"Referral has been pending for more than 14 days without an appointment.",
 		IssueSeverity.High);
 		}

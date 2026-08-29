@@ -7,6 +7,7 @@ namespace CarePathGuardian.Domain.DataQualityRules;
 
 public class AppointmentBeforeReferralRule : IReferralDataQualityRule
 {
+	public string RuleCode => "APPOINTMENT_BEFORE_REFERRAL";
 	public DataQualityIssue? Evaluate(Referral referral, IEnumerable<Appointment> appointments)
 	{
 		foreach( var appointment in appointments)
@@ -16,7 +17,7 @@ public class AppointmentBeforeReferralRule : IReferralDataQualityRule
 				return new DataQualityIssue(
 				"Appointment",
 				appointment.Id,
-				"APPOINTMENT_BEFORE_REFERRAL",
+				RuleCode,
 				"Appointment date is before referral date.",
 				IssueSeverity.High);
 			}

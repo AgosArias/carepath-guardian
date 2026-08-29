@@ -59,4 +59,19 @@ public class FakeDataQualityIssueRepositor : IDataQualityIssueRepository
 		&& i.EntityType == entityType 
 		&& i.RuleCode== ruleCode));
 	}
+
+	public Task<DataQualityIssue?> GetOpenAsync(
+    string entityType,
+    Guid entityId,
+    string ruleCode)
+	{
+		var issue = Issues
+		.FirstOrDefault(i=> 
+		i.Status == IssueStatus.Open && 
+		i.EntityId == entityId && 
+		i.EntityType == entityType && 
+		i.RuleCode== ruleCode);
+
+		return Task.FromResult(issue);
+	}
 }

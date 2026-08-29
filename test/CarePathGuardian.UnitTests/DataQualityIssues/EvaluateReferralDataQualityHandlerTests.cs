@@ -1,5 +1,6 @@
 using CarePathGuardian.Application.DataQualityIssues.EvaluateReferralDataQuality;
 using CarePathGuardian.Domain.Appointments;
+using CarePathGuardian.Domain.DataQualityIssues;
 using CarePathGuardian.Domain.Referrals;
 using CarePathGuardian.UnitTests.Fakes;
 
@@ -100,5 +101,38 @@ public class EvaluateReferralDataQualityHandlerTests
 		await handler.Handle(referral, appointments);
 	
 		Assert.Single(repository.Issues);
+	}
+	[Fact]
+	public async Task Handle_WhenProblemIsFixed_ShouldResolveExistingIssue()
+	{
+		var referral = new Referral(
+			Guid.NewGuid(),
+			DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-20)),
+			"",
+			"",
+			ReferralStatus.Pending,
+			ReferralPriority.Low);
+	
+		var repository = new FakeDataQualityIssueRepositor();
+		var handler = new EvaluateReferralDataQualityHandler(repository);
+	
+		await handler.Handle(referral, new List<Appointment>());
+	
+		var issue = repository.Issues
+			.First(i => i.RuleCode == "REFERRAL_PENDING_OVER_14_DAYS");
+	
+		Assert.Equal(IssueStatus.Open, issue.Status);
+	
+		var appointments = new List<Appointment>
+		{
+			new Appointment(
+				referral.Id,
+				DateTime.UtcNow.AddDays(5),
+				AppointmentStatus.Scheduled,
+				null)
+		};
+		await handler.Handle(referral, appointments);
+	
+		Assert.Equal(IssueStatus.Resolved, issue.Status);
 	}
 }

@@ -73,4 +73,18 @@ public class DataQualityIssueRepository : IDataQualityIssueRepository
 		var query = _dbContext.DataQualityIssues.AsNoTracking();
 		return await query.AnyAsync(i=> i.Status == IssueStatus.Open && i.EntityId == entityId && i.EntityType == entityType && i.RuleCode== ruleCode);
 	}
+
+	public async Task<DataQualityIssue?> GetOpenAsync(
+    string entityType,
+    Guid entityId,
+    string ruleCode)
+	{
+		return await _dbContext
+		.DataQualityIssues
+		.FirstOrDefaultAsync(i=> 
+		i.Status == IssueStatus.Open && 
+		i.EntityId == entityId && 
+		i.EntityType == entityType && 
+		i.RuleCode== ruleCode);
+	}
 }

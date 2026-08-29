@@ -36,6 +36,18 @@ public class EvaluateReferralDataQualityHandler
 				if(!exists)
 					await _dataQualityIssueRepository.AddAsync(issue);
 			}
+			else
+			{
+				var existingIssue = await _dataQualityIssueRepository
+				.GetOpenAsync("Referral", referral.Id, rule.RuleCode);
+
+				if(existingIssue is not null)
+				{
+					existingIssue.Resolve("Automatically resolved after reevaluation");
+
+					await _dataQualityIssueRepository.UpdateAsync(existingIssue);
+				}
+			}
 		}
 
 	}

@@ -5,5 +5,7 @@ using CarePathGuardian.Domain.DataQualityIssues;
 namespace CarePathGuardian.Domain.DataQualityRules;
 public interface IReferralDataQualityRule
 {
+	string RuleCode { get; }
+
 	DataQualityIssue? Evaluate( Referral referral, IEnumerable<Appointment> appointments);
 }

@@ -17,4 +17,9 @@ public interface IDataQualityIssueRepository
     string entityType,
     Guid entityId,
     string ruleCode);
+
+	Task<DataQualityIssue?> GetOpenAsync(
+    string entityType,
+    Guid entityId,
+    string ruleCode);
 }
