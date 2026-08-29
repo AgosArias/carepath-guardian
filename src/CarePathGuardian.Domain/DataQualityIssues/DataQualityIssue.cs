@@ -52,4 +52,16 @@ public class DataQualityIssue
 		ResolvedAtUtc = DateTime.UtcNow;
 		ResolutionNotes = resolutionNotes.Trim();
 	}
+
+	public IssuePriority GetPriority(DateTime nowUtc)
+	{
+		var age = nowUtc - DetectedAtUtc;
+
+		if(Severity == IssueSeverity.High && age.TotalDays > 30) return IssuePriority.Critical;
+		if(Severity == IssueSeverity.High && age.TotalDays > 30) return IssuePriority.High;
+		if(Severity == IssueSeverity.Medium && age.TotalDays > 30) return IssuePriority.High;
+		if(Severity == IssueSeverity.Medium && age.TotalDays > 30) return IssuePriority.Medium;
+
+		return IssuePriority.Low;
+	}
 }

@@ -9,6 +9,7 @@ public interface IDataQualityIssueRepository
 	Task<List<DataQualityIssue>> GetAllAsync(IssueStatus? status = null, 
 	IssueSeverity? severity = null, 
 	int page = 1,
-    int pageSize = 20);
+    int pageSize = 20,
+	string sort = null);
 	Task UpdateAsync(DataQualityIssue issue);
 }

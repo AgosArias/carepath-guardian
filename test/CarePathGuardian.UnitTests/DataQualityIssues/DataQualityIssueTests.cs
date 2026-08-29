@@ -2,9 +2,9 @@ using CarePathGuardian.Domain.DataQualityIssues;
 
 namespace CarePathGuardian.UnitTests.DataQualityIssues
 {
-    public class DataQualityIssueTests
-    {
-        [Fact]
+	public class DataQualityIssueTests
+	{
+		[Fact]
 		public void Constructor_WhenDataIsValid_ShouldCreateDataQualityIssue()
 		{
 			Guid entityId = Guid.NewGuid();
@@ -95,6 +95,23 @@ namespace CarePathGuardian.UnitTests.DataQualityIssues
 			Action action = () => dataQualityIssue.Resolve("  ");
 			Assert.Throws<ArgumentException>(action);
 		}
-    }
+
+		[Fact]
+		public void GetPriority_WhenHighSeverityAndOlderThan30Days_ShouldBeCritical()
+		{
+			var issue = new DataQualityIssue(
+				"Referral",
+				Guid.NewGuid(),
+				"TEST_RULE",
+				"Test issue",
+				IssueSeverity.High);
+		
+			var now = issue.DetectedAtUtc.AddDays(31);
+		
+			var priority = issue.GetPriority(now);
+		
+			Assert.Equal(IssuePriority.Critical, priority);
+		}
+	}
 
 }

@@ -18,20 +18,28 @@ public class FakeDataQualityIssueRepositor : IDataQualityIssueRepository
 	}
 
 	public Task<List<DataQualityIssue>> GetAllAsync(IssueStatus? status = null,
-    IssueSeverity? severity = null, 
+	IssueSeverity? severity = null, 
 	int page = 1,
-    int pageSize = 20)
+	int pageSize = 20, string? sort = null)
 	{
 		IEnumerable<DataQualityIssue> issues = Issues;
 		if(status.HasValue)
 			issues = issues.Where(i => i.Status == status.Value);
 		if(severity.HasValue)
 			issues = issues.Where(i => i.Severity == severity.Value);
-		issues = issues
-        .OrderByDescending(i => i.DetectedAtUtc)
-        .Skip((page - 1) * pageSize)
-        .Take(pageSize);
-		return Task.FromResult(issues.ToList());
+		DateTime nowUtc = DateTime.UtcNow;
+		if (sort == "priority")
+			issues = issues.OrderByDescending(i => i.GetPriority(nowUtc));
+		else if (sort == "oldest")
+			issues = issues.OrderBy(i => i.DetectedAtUtc);
+		else if (sort == "severity")
+			issues = issues.OrderByDescending(i => i.Severity);
+		else
+			issues = issues.OrderByDescending(i => i.DetectedAtUtc);
+		return Task.FromResult(issues
+		.Skip((page - 1) * pageSize)
+		.Take(pageSize)
+		.ToList());
 	} 
 
 	public Task UpdateAsync(DataQualityIssue issue)
