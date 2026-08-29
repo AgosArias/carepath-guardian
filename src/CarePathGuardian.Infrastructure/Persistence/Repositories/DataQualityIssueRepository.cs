@@ -64,4 +64,13 @@ public class DataQualityIssueRepository : IDataQualityIssueRepository
 	{
 		await _dbContext.SaveChangesAsync();
 	}
+
+	public async Task<bool> ExistsOpenAsync(
+    string entityType,
+    Guid entityId,
+    string ruleCode)
+	{
+		var query = _dbContext.DataQualityIssues.AsNoTracking();
+		return await query.AnyAsync(i=> i.Status == IssueStatus.Open && i.EntityId == entityId && i.EntityType == entityType && i.RuleCode== ruleCode);
+	}
 }

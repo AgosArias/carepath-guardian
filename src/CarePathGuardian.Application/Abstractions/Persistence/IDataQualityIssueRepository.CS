@@ -10,6 +10,11 @@ public interface IDataQualityIssueRepository
 	IssueSeverity? severity = null, 
 	int page = 1,
     int pageSize = 20,
-	string sort = null);
+	string? sort = null);
 	Task UpdateAsync(DataQualityIssue issue);
+
+	Task<bool> ExistsOpenAsync(
+    string entityType,
+    Guid entityId,
+    string ruleCode);
 }

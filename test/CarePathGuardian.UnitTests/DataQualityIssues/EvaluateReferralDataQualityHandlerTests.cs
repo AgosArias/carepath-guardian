@@ -80,4 +80,25 @@ public class EvaluateReferralDataQualityHandlerTests
 
 		Assert.Equal(2, repository.Issues.Count);
 	}
+	[Fact]
+	public async Task Handle_WhenSameIssueAlreadyExists_ShouldNotCreateDuplicate()
+	{
+		var referral = new Referral(
+			Guid.NewGuid(),
+			DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-20)),
+			"",
+			"",
+			ReferralStatus.Pending,
+			ReferralPriority.Low);
+	
+		var appointments = new List<Appointment>();
+	
+		var repository = new FakeDataQualityIssueRepositor();
+		var handler = new EvaluateReferralDataQualityHandler(repository);
+	
+		await handler.Handle(referral, appointments);
+		await handler.Handle(referral, appointments);
+	
+		Assert.Single(repository.Issues);
+	}
 }

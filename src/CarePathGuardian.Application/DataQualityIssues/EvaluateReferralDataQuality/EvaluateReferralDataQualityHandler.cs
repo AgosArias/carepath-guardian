@@ -30,7 +30,11 @@ public class EvaluateReferralDataQualityHandler
 			var issue = rule.Evaluate(referral,appointments);
 			if(issue is not null)
 			{
-				await _dataQualityIssueRepository.AddAsync(issue);
+				var exists = await _dataQualityIssueRepository.
+				ExistsOpenAsync(issue.EntityType, issue.EntityId, issue.RuleCode);
+
+				if(!exists)
+					await _dataQualityIssueRepository.AddAsync(issue);
 			}
 		}
 

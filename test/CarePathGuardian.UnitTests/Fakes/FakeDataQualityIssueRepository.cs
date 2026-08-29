@@ -46,4 +46,17 @@ public class FakeDataQualityIssueRepositor : IDataQualityIssueRepository
 	{
 		return Task.CompletedTask;
 	}
+
+	public Task<bool> ExistsOpenAsync(
+    string entityType,
+    Guid entityId,
+    string ruleCode)
+	{
+		IEnumerable<DataQualityIssue> issues = Issues;
+		return Task.FromResult(issues
+		.Any(i=> i.Status == IssueStatus.Open &&
+		i.EntityId == entityId 
+		&& i.EntityType == entityType 
+		&& i.RuleCode== ruleCode));
+	}
 }
